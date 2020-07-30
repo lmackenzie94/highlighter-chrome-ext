@@ -1,3 +1,10 @@
+//  THIS VERSION USES JS OBJECT TO STORE DATA, NOT CHROME STORAGE
+
+// global vars
+let title = '';
+let url = '';
+let text = '';
+
 // create context menu items
 const saveHighlightMenuItem = {
   id: 'saveHighlight',
@@ -8,25 +15,19 @@ chrome.contextMenus.create(saveHighlightMenuItem);
 
 const setTitleMenuItem = {
   id: 'setTitle',
-  title: 'Set Title',
+  title: 'Set Selected as Title',
   contexts: ['selection'],
 };
 chrome.contextMenus.create(setTitleMenuItem);
 
 // add listeners
 chrome.contextMenus.onClicked.addListener(async function (clickData) {
-  let title;
-  let url;
-  let text;
-
-  url = await getChromeValue('pageUrl');
-  title = await getChromeValue('pageTitle');
+  url = await getPageUrl();
 
   if (clickData.menuItemId === 'setTitle' && clickData.selectionText) {
     // store title to chrome storage
-    const pageTitle = clickData.selectionText.trim();
-    title = await setChromeValue('pageTitle', pageTitle);
-    alert(`Current title: "${title}"`);
+    title = clickData.selectionText.trim();
+    alert(`TITLE SET TO: "${title}"`);
   } else if (
     clickData.menuItemId === 'saveHighlight' &&
     clickData.selectionText
@@ -35,14 +36,7 @@ chrome.contextMenus.onClicked.addListener(async function (clickData) {
 
     const highlightPreview = `${text.substring(0, 60)}...`;
 
-    let looksGood = confirm(
-      `TITLE: ${title}\r\n\r\nURL: ${url}\r\n\r\nTEXT: ${text}`
-    );
-
-    if (!looksGood) {
-      alert('Save cancelled');
-      return;
-    }
+    alert(`TITLE: ${title} | URL: ${url} | TEXT: ${text}`);
 
     try {
       await saveHighlight(title, url, text);
@@ -58,11 +52,14 @@ chrome.contextMenus.onClicked.addListener(async function (clickData) {
 
 // custom functions
 async function saveHighlight(highlightTitle, highlightUrl, highlightText) {
-  const data = {
-    title: highlightTitle,
-    url: highlightUrl,
-    text: highlightText,
-  };
+  alert(
+    JSON.stringify({
+      title: highlightTitle,
+      url: highlightUrl,
+      text: highlightText,
+    })
+  );
+  const data = { title, url, text };
   const response = await fetch(`https://wikiluke.herokuapp.com/highlights`, {
     method: 'POST',
     headers: {
@@ -100,20 +97,11 @@ function createNotification(
   num++;
 }
 
-// add to chrome storage
-function setChromeValue(key, value) {
+// set page URL
+function getPageUrl() {
   return new Promise((res, rej) => {
-    chrome.storage.local.set({ [key]: value }, function () {
-      res(value);
-    });
-  });
-}
-
-// get from chrome storage
-function getChromeValue(key) {
-  return new Promise((res, rej) => {
-    chrome.storage.local.get([key], function (result) {
-      res(result[key]);
+    chrome.storage.local.get(['pageUrl'], function (result) {
+      res(result.pageUrl);
     });
   });
 }
