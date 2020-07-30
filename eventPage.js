@@ -33,7 +33,7 @@ chrome.contextMenus.onClicked.addListener(async function (clickData) {
   ) {
     text = clickData.selectionText.trim();
 
-    const highlightPreview = `${text.substring(0, 60)}...`;
+    const highlightPreview = `${text.substring(0, 75)}...`;
 
     let looksGood = confirm(
       `TITLE: ${title}\r\n\r\nURL: ${url}\r\n\r\nTEXT: ${text}`
@@ -87,7 +87,7 @@ function createNotification(
   const id = `notification-${num}`;
   const options = {
     type: 'basic',
-    iconUrl: 'logo.png',
+    iconUrl: 'highlighter.png',
     title,
     message,
     priority: 1,

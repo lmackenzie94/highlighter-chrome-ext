@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Highlighter Info</title>
+    <style>
+      body {
+        font-size: 12px;
+        padding: 0;
+        margin: 0;
+        min-width: 400px;
+        max-width: 600px;
+        font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande',
+          'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+      }
+      main {
+        padding: 20px;
+      }
+      h1 {
+        font-size: 15px;
+        width: 100%;
+        background: #e6460b;
+        color: white;
+        padding: 10px 20px;
+        margin: 0 0 5px 0;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+      }
+      p {
+        font-weight: bold;
+        word-break: break-word;
+        margin: 0px;
+      }
+      p:first-of-type {
+        margin-bottom: 20px;
+      }
+
+      #title,
+      #url,
+      #test {
+        font-weight: normal;
+        padding-left: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Highlighter</h1>
+    </header>
+    <main>
+      <p>Title:<span id="title"></span></p>
+      <p>URL:<span id="url"></span></p>
+      <!-- <p>Current Text:<span id="text"></span></p> -->
+    </main>
+    <script src="popup.js"></script>
+  </body>
+</html>
