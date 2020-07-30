@@ -1,3 +1,8 @@
+// global vars
+let title = '';
+let url = '';
+let text = '';
+
 // create context menu items
 const saveHighlightMenuItem = {
   id: 'saveHighlight',
@@ -15,10 +20,6 @@ chrome.contextMenus.create(setTitleMenuItem);
 
 // add listeners
 chrome.contextMenus.onClicked.addListener(async function (clickData) {
-  let title = '';
-  let url = '';
-  let text = '';
-
   url = await getPageUrl();
   alert(url);
 
@@ -49,13 +50,18 @@ chrome.contextMenus.onClicked.addListener(async function (clickData) {
 });
 
 // custom functions
-async function saveHighlight(title, url, text) {
-  alert(JSON.stringify({ title, url, text }));
+async function saveHighlight(highlightTitle, highlightUrl, highlightText) {
+  alert(
+    JSON.stringify({
+      title: highlightTitle,
+      url: highlightUrl,
+      text: highlightText,
+    })
+  );
   const data = { title, url, text };
   const response = await fetch(`https://wikiluke.herokuapp.com/highlights`, {
     method: 'POST',
     headers: {
-      'Access-Control-Allow-Origin': '*',
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(data), // body data type must match "Content-Type" header
