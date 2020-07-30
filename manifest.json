@@ -1,0 +1,29 @@
+{
+  "name": "Highlighter",
+  "version": "1.0.3",
+  "description": "Description.",
+  "icons": {
+    "16": "logo.png",
+    "48": "logo.png",
+    "128": "logo.png"
+  },
+  "manifest_version": 2,
+  "permissions": [
+    "contextMenus",
+    "notifications",
+    "storage",
+    "tabs",
+    "https://wikiluke.herokuapp.com/*"
+  ],
+  "background": {
+    "scripts": ["eventPage.js"],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["content.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
